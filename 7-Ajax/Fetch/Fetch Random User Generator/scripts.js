@@ -19,7 +19,6 @@ fetch(url)
 });
 
 
-
 function parseJSON(res) {
     return res.json().then(function(parsedData) {
         return parsedData.results[0];
@@ -34,9 +33,9 @@ function updateProfile(data) {
     avatar.src = data.picture.medium;
 }
 
-function handleErrors(request) {
-    if (!request.ok) {
-        throw Error(request.status);
+function handleErrors(res) {
+    if (!res.ok) {
+        throw Error(res.status);
     }
-    return request;
+    return res;
 }
