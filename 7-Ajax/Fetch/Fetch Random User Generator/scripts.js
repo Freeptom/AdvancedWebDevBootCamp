@@ -11,21 +11,28 @@ btn.addEventListener('click', function() {
     let url = "https://randomuser.me/api/"
 fetch(url)
 .then(handleErrors)
-.then(function(request) {
-    return request.json()
-  })
-.then(function(request) {
-    console.log(request);
-    fullname.innerText = (request).results[0].name.first + " " + (request).results[0].name.last;
-    username.innerText = (request).results[0].login.username;
-    email.innerText = (request).results[0].email;
-    city.innerText = (request).results[0].location.city;
-    avatar.src = (request).results[0].picture.medium;
-})
+.then(parseJSON)
+.then(updateProfile)
 .catch(function(error) {
     console.log(error);
+    });
 });
-});
+
+
+
+function parseJSON(res) {
+    return res.json().then(function(parsedData) {
+        return parsedData.results[0];
+    })
+}
+
+function updateProfile(data) {
+    fullname.innerText = data.name.first + " " + data.name.last;
+    username.innerText = data.login.username;
+    email.innerText = data.email;
+    city.innerText = data.location.city;
+    avatar.src = data.picture.medium;
+}
 
 function handleErrors(request) {
     if (!request.ok) {
