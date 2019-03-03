@@ -7,7 +7,7 @@ Examples:
 
 */
 function doubleValues(arr){
-    newDoubleVals = [];
+    let newDoubleVals = [];
     arr.forEach(function(val) {
         newDoubleVals.push( val * 2 );
     })
@@ -23,7 +23,7 @@ Examples:
 
 */
 function onlyEvenValues(arr){
-    newEvenVals = [];
+    let newEvenVals = [];
     arr.forEach(function(val) {
         if(val % 2 == 0) {
             newEvenVals.push(val);
@@ -41,7 +41,11 @@ Examples:
 
 */
 function showFirstAndLast(arr){
-    
+    let newShowFirstAndLast = [];
+    arr.forEach(function(string) {
+        newShowFirstAndLast.push(string[0], string[string.length-1]);
+    })
+    console.log(newShowFirstAndLast);
 }
 
 /*
@@ -54,11 +58,14 @@ Examples:
 
 */
 function addKeyAndValue(arr,key,value){
-    
+    arr.forEach(function(object) {
+       object[key] = value;
+    })
+    console.log(arr);
 }
 
 /*
-Write a function called vowelCount which accepts a string and returns an object with the keys as the vowel and the values as the number of times the vowel appears in the string. This function should be case insensitive so a lowercase letter and uppercase letter should count
+Write a function called vowelCount which accepts a string and returns an object with the  keys as the vowel and the values as the number of times the vowel appears in the string. This function should be case insensitive so a lowercase letter and uppercase letter should count
 
 Examples:
     vowelCount('Elie') // {e:2,i:1};
@@ -68,5 +75,18 @@ Examples:
     vowelCount('I Am awesome and so are you') // {i: 1, a: 4, e: 3, o: 3, u: 1};
 */
 function vowelCount(str){
-   
+    let splitArr = str.split("");
+    let obj = {};
+    let vowels = "aeiou";
+
+    splitArr.forEach(function(letter) {
+        if(vowels.indexOf(letter.toLowerCase()) !== -1) {
+            if(letter in obj) {
+                obj[letter]++
+            } else {
+                obj[letter] = 1;
+            }
+        } 
+    });
+    console.log(obj);
 }
