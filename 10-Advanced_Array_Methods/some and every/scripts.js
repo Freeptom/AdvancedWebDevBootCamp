@@ -26,6 +26,54 @@ function hasComma(str) {
 }
 
 
+// every - creating myself
+
+function every(arr, callback) {
+    for(let i = 0; i < arr.length; i++) {
+        if(callback(array[i], i, array) === false) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+// every - an example
+let arr = [-1,-2,-3];
+
+arr.every(function(value, index, array) {
+    return value < 0;
+}) // true
+
+
+// another
+let arr2 = [1,2,3];
+
+arr.every(function(value, index, array) {
+    return value > 2;
+}); // false
+
+
+// another
+
+function allLowerCase(str) {
+    return str.split('').every(function(value) {
+        return value === value.toLowerCase();
+    });
+} 
+
+allLowerCase('this is really nice');
+allLowerCase('this is Really nice');
+
+
+//another
+
+function allArrays(arr) {
+    return arr.every(Array.isArray);
+}
+
+allArrays([[1], [2], [3,4]]); // true
+allArrays([[1], [2], {}]); // false
 
 /*
 Write a function called hasOddNumber which accepts an array and returns true if the array contains at least one odd number, otherwise it returns false.
@@ -36,7 +84,9 @@ Examples:
 */
 
 function hasOddNumber(arr){
-    
+   return arr.some(function(value) {
+       return value % 2 !== 0;
+    })
 }
 
 /*
@@ -48,7 +98,12 @@ Examples:
 */
 
 function hasAZero(num){
-    
+    return num
+    .toString()
+    .split('')
+    .some(function(value) {
+        return value === '0';
+    })
 }
 
 /*
@@ -60,7 +115,9 @@ Examples:
 */
 
 function hasOnlyOddNumbers(arr){
-    
+    return arr.every(function(value) {
+        return value % 2 !== 0;
+    })
 }
 
 /*
@@ -72,7 +129,9 @@ Examples:
 */
 
 function hasNoDuplicates(arr){
-    
+    return arr.every(function(value) {
+        return arr.indexOf(value) === arr.lastIndexOf(value);
+    });
 }
 
 /*
@@ -91,8 +150,13 @@ Examples:
 */
 
 function hasCertainKey(arr, key){
-    
-}
+    return arr.every(function(value) {
+        return value[key];
+    })
+};
+
+
+
 
 /*
 Write a function called hasCertainValue which accepts an array of objects and a key, and a value, and returns true if every single object in the array contains that value for the specific key. Otherwise it should return false.
@@ -111,5 +175,7 @@ Examples:
 */
 
 function hasCertainValue(arr, key, searchValue){
-    
+    return arr.every(function(value) {
+        return value[key] === searchValue; 
+    })
 }

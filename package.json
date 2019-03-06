@@ -1,0 +1,24 @@
+{
+  "name": "advancedwebdevbootcamp",
+  "version": "1.0.0",
+  "description": "Advanced React Course",
+  "main": "index.js",
+  "dependencies": {
+    "eslint": "^5.15.1",
+    "gsap": "^2.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Freeptom/AdvancedWebDevBootCamp.git"
+  },
+  "author": "Tom Pearson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Freeptom/AdvancedWebDevBootCamp/issues"
+  },
+  "homepage": "https://github.com/Freeptom/AdvancedWebDevBootCamp#readme"
+}
