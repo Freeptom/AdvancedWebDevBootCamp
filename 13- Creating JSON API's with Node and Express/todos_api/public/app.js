@@ -16,16 +16,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     let list = document.querySelector('.list');
-    list.addEventListener('click', function (event) {
-        let target = event.target;
-        if (event.target.tagName.toLowerCase() === 'span') {
-            //this.parentNode.removeChild(this);
-            console.log(target.nodeName);
-            console.log(target.parentNode);
-            target.parentNode.remove()
-
-
-        }
+    list.addEventListener('click', function (e) {
+        const clicked = e.target.parentNode;
+        console.log(clicked); // need to get correct clicked
+        removeTodo(clicked);
     });
 
 
@@ -40,20 +34,29 @@ document.addEventListener("DOMContentLoaded", function () {
         // create elements
         let newTodo = document.createElement('li');
         let newExit = document.createElement('span');
+
         // add styling
         newTodo.classList.add('task');
-        // create text content
-        let TodoText = document.createTextNode(todo.name);
-        let TodoExit = document.createTextNode('X');
+
+        // create text content and data
+        let todoText = document.createTextNode(todo.name);
+        let todoExit = document.createTextNode('X');
+
+        // append data attributes
+        newTodo.setAttribute('data-id', todo._id);
+        (newTodo.getAttribute('data-id'));
 
         // append content to elements
-        newTodo.appendChild(TodoText);
-        newExit.appendChild(TodoExit);
+        newTodo.appendChild(todoText);
+        newExit.appendChild(todoExit);
+
         // append span to li
         newTodo.appendChild(newExit);
+
         // append combination to class
         document.querySelector('.list').appendChild(newTodo);
-        // if completed, style
+
+        // if completed todo, style
         if (todo.completed) {
             newTodo.classList.add('done');
         }
@@ -83,3 +86,51 @@ document.addEventListener("DOMContentLoaded", function () {
             })
     }
 });
+
+function removeTodo(todo) {
+    if (event.target.tagName.toLowerCase() === 'span') {
+        // remove li
+        todo.parentNode.removeChild(todo);
+        // get data id
+        const clickedId = todo.getAttribute('data-id');
+        // append data id to delete req
+        let deleteUrl = '/api/todos/' + clickedId;
+        const deleteId = {
+            method: 'DELETE',
+            body: "",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+        fetch(deleteUrl, deleteId)
+            .then(message => message.json())
+            .then(message => console.log(message))
+            .catch(err => console.log(err));
+
+    }
+}
+
+
+
+// let target = event.target;
+// if (event.target.tagName.toLowerCase() === 'span') {
+//     // x   li         ul                     x      li
+//     target.parentNode.parentNode.removeChild(target.parentNode);
+//     const clickedId = target.parentNode.getAttribute('data-id');
+//     let deleteUrl = '/api/todos/' + clickedId;
+//     console.log(clickedId);
+
+//     const deleteId = {
+//         method: 'DELETE',
+//         body: "",
+//         headers: {
+//             'Content-Type': 'application/json'
+//         }
+//     };
+
+//     fetch(deleteUrl, deleteId)
+//         .then(message => message.json())
+//         .then(message => console.log(message));
+
+// }
