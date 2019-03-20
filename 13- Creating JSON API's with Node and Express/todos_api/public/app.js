@@ -15,12 +15,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+
+
     let list = document.querySelector('.list');
-    list.addEventListener('click', function (e) {
-        const clicked = e.target.parentNode;
-        console.log(clicked); // need to get correct clicked
+    list.addEventListener('click', function (event) {
+        const clicked = event.target.parentNode;
+        event.stopPropagation();
         removeTodo(clicked);
     });
+
+    list.addEventListener('click', function (event) {
+        if (event.target.tagName.toLowerCase() === 'li') {
+            const clicked = event.target;
+            updateTodo(clicked);
+        }
+    })
 
 
     function addTodos(todos) {
@@ -33,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function addTodo(todo) {
         // create elements
         let newTodo = document.createElement('li');
-        let newExit = document.createElement('span');
+        let newDelete = document.createElement('span');
 
         // add styling
         newTodo.classList.add('task');
@@ -44,14 +53,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // append data attributes
         newTodo.setAttribute('data-id', todo._id);
-        (newTodo.getAttribute('data-id'));
+        newTodo.setAttribute('data-completed', todo.completed);
 
         // append content to elements
         newTodo.appendChild(todoText);
-        newExit.appendChild(todoExit);
+        newDelete.appendChild(todoExit);
 
         // append span to li
-        newTodo.appendChild(newExit);
+        newTodo.appendChild(newDelete);
 
         // append combination to class
         document.querySelector('.list').appendChild(newTodo);
@@ -110,6 +119,35 @@ function removeTodo(todo) {
 
     }
 }
+
+function updateTodo(todo) {
+    // attach completed to var
+    let isDone = !todo.getAttribute('data-completed');
+    let updateData = {
+        completed: isDone
+    }
+    console.log(updateData);
+    // get data id
+    const clickedId = todo.getAttribute('data-id');
+
+    // append data id to put req
+    let updateUrl = '/api/todos/' + clickedId;
+    const updateCompleted = {
+        method: 'PUT',
+        body: JSON.stringify(updateData),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+    // make put req
+    fetch(updateUrl, updateCompleted)
+        .then(updatedTodo => updatedTodo.json())
+        .then(updatedTodo => todo.classList.toggle('done'))
+        .then(updatedTodo => todo.setAttribute('data-completed', isDone))
+        .catch(err => console.log(err));
+};
+
+
 
 
 
