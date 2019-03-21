@@ -122,7 +122,7 @@ function removeTodo(todo) {
 
 function updateTodo(todo) {
     // attach completed to var
-    let isDone = !todo.getAttribute('data-completed');
+    let isDone = todo.getAttribute('data-completed');
     let updateData = {
         completed: isDone
     }
@@ -142,7 +142,7 @@ function updateTodo(todo) {
     // make put req
     fetch(updateUrl, updateCompleted)
         .then(updatedTodo => updatedTodo.json())
-        .then(updatedTodo => todo.classList.toggle('done'))
+        .then(updatedTodo => todo.classList.toggle('done')) //check updatedTodo (why greyed out??)
         .then(updatedTodo => todo.setAttribute('data-completed', isDone))
         .catch(err => console.log(err));
 };
