@@ -122,14 +122,17 @@ function removeTodo(todo) {
 
 function updateTodo(todo) {
     // attach completed to var
-    let isDone = todo.getAttribute('data-completed');
+    console.log(todo.getAttribute('data-id'));
+    console.log(todo.getAttribute('data-completed'));
+
+    isDone = todo.getAttribute('data-completed');
+
     let updateData = {
-        completed: isDone
+        completed: !isDone
     }
-    console.log(updateData);
+
     // get data id
     const clickedId = todo.getAttribute('data-id');
-
     // append data id to put req
     let updateUrl = '/api/todos/' + clickedId;
     const updateCompleted = {
@@ -142,9 +145,10 @@ function updateTodo(todo) {
     // make put req
     fetch(updateUrl, updateCompleted)
         .then(updatedTodo => updatedTodo.json())
-        .then(updatedTodo => todo.classList.toggle('done')) //check updatedTodo (why greyed out??)
-        .then(updatedTodo => todo.setAttribute('data-completed', isDone))
+        .then(() => todo.classList.toggle('done'))
+        .then(() => todo.setAttribute('data-completed', !isDone))
         .catch(err => console.log(err));
+
 };
 
 
