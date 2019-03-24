@@ -94,85 +94,68 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log(err);
             })
     }
-});
 
-function removeTodo(todo) {
-    if (event.target.tagName.toLowerCase() === 'span') {
-        // remove li
-        todo.parentNode.removeChild(todo);
+
+    function removeTodo(todo) {
+        if (event.target.tagName.toLowerCase() === 'span') {
+            // remove li
+            todo.parentNode.removeChild(todo);
+            // get data id
+            const clickedId = todo.getAttribute('data-id');
+            // append data id to delete req
+            let deleteUrl = '/api/todos/' + clickedId;
+            const deleteId = {
+                method: 'DELETE',
+                body: "",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            fetch(deleteUrl, deleteId)
+                .then(message => message.json())
+                .then(message => console.log(message))
+                .catch(err => console.log(err));
+
+        }
+    }
+
+    function updateTodo(todo) {
+        // attach completed to var
+        let isDone = todo.dataset.completed;
+
+        // flip isDone
+        if (isDone == 'true') {
+            isDone = 'false';
+        } else {
+            isDone = 'true'
+        }
+
+        let updateData = {
+            completed: isDone
+        }
         // get data id
         const clickedId = todo.getAttribute('data-id');
-        // append data id to delete req
-        let deleteUrl = '/api/todos/' + clickedId;
-        const deleteId = {
-            method: 'DELETE',
-            body: "",
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        };
+        // append data id to put req
 
-        fetch(deleteUrl, deleteId)
-            .then(message => message.json())
-            .then(message => console.log(message))
-            .catch(err => console.log(err));
 
-    }
-}
+        let updateUrl = '/api/todos/' + clickedId;
+        fetch(updateUrl, {
+                credentials: 'same-origin',
+                method: 'PUT',
+                body: JSON.stringify(updateData),
+                headers: new Headers({
+                    'Content-Type': 'application/json'
+                }),
 
-function updateTodo(todo) {
-    // attach completed to var
-    console.log(todo.getAttribute('data-id'));
-    console.log(todo.getAttribute('data-completed'));
+            })
+            .then(function (updatedTodo) {
+                todo.classList.toggle('done')
+                console.log(todo);
+                todo.dataset.completed = isDone; // set data attr to isDone val
+                console.log(isDone);
+            })
 
-    isDone = todo.getAttribute('data-completed');
-
-    let updateData = {
-        completed: !isDone
-    }
-
-    // get data id
-    const clickedId = todo.getAttribute('data-id');
-    // append data id to put req
-    let updateUrl = '/api/todos/' + clickedId;
-    const updateCompleted = {
-        method: 'PUT',
-        body: JSON.stringify(updateData),
-        headers: {
-            'Content-Type': 'application/json'
-        }
     };
-    // make put req
-    fetch(updateUrl, updateCompleted)
-        .then(updatedTodo => updatedTodo.json())
-        .then(() => todo.classList.toggle('done'))
-        .then(() => todo.setAttribute('data-completed', !isDone))
-        .catch(err => console.log(err));
 
-};
-
-
-
-
-
-// let target = event.target;
-// if (event.target.tagName.toLowerCase() === 'span') {
-//     // x   li         ul                     x      li
-//     target.parentNode.parentNode.removeChild(target.parentNode);
-//     const clickedId = target.parentNode.getAttribute('data-id');
-//     let deleteUrl = '/api/todos/' + clickedId;
-//     console.log(clickedId);
-
-//     const deleteId = {
-//         method: 'DELETE',
-//         body: "",
-//         headers: {
-//             'Content-Type': 'application/json'
-//         }
-//     };
-
-//     fetch(deleteUrl, deleteId)
-//         .then(message => message.json())
-//         .then(message => console.log(message));
-
-// }
+});
